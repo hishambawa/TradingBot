@@ -27,19 +27,37 @@
 	border:0;
 	outline:none;
 }
-
-table {
-  width: 50%;
-  border: 2px solid;
-}
-
-table {
-  border-collapse: collapse;
-  width: 50%;
-}
-
-th, td {
-  padding: 15px;
-}
   
- 
+.main {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	grid-template-areas: "graph controls"
+						 "history prices";
+	grid-gap: 10px;
+	/* 80px - navbar 
+	   16px - body margin 
+	   5px - grid gap (50%) */
+	height: calc(100vh - 101px); 
+} 
+
+.graph {
+	grid-area: graph;
+}
+
+.controls {
+	grid-area: controls;
+}
+
+.history {
+	grid-area: history;
+}
+
+.prices {
+	grid-area: prices;
+}
+
+.graph, .controls, .history, .prices {
+	border: 2px solid #000;
+	padding: 10px 20px;
+}
