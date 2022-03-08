@@ -1,86 +1,107 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import math
+import time as time
 
+from trading_env import TradingEnvironment
 
 pd.options.mode.chained_assignment = None
 
 df = pd.read_csv('data.csv')
 
-symbol = "HNB"
-
-# Select the rows in the dataframe that contains the selected symbol
-df_selected = df.loc[df['symbol'] == symbol]
-
-# Convert the price column of the dataframe to float values
-df_selected['price'] = df_selected['price'].astype(float)
-
-
-df_selected.index = np.arange(df_selected.shape[0])
-
 # Get the simple moving averages
 def get_sma(prices, rate):
     return prices.rolling(rate).mean()
 
+# Generate the bollinger bands
 def get_bollinger_bands(prices, rate=20):
-    sma = get_sma(prices, rate) # <-- Get SMA for 20 days
-    std = prices.rolling(rate).std() # <-- Get rolling standard deviation for 20 days
+    sma = get_sma(prices, rate)      # Get SMA for 20 days
+    std = prices.rolling(rate).std() # Get rolling standard deviation for 20 days
 
     bollinger_up = sma + std * 2
     bollinger_down = sma - std * 2
 
     return bollinger_up, bollinger_down
 
-prices = df_selected['price']
+symbols = ['A', 'AAPL', 'FB', 'GOOG']
 
-df_selected['bollinger_up'], df_selected['bollinger_down'] = get_bollinger_bands(prices)
+for symbol in symbols:
+
+    # Convert the price column of the dataframe to float values
+    df[f'{symbol}_price'] = df[f'{symbol}_price'].astype(float)
+
+    # Generate the bollinger bands
+    df[f'{symbol}_upper_band'], df[f'{symbol}_lower_band'] = get_bollinger_bands(df[f'{symbol}_price'])
+
+# Remove the missing values
+df.dropna(inplace=True)
 
 print("Running")
 
 ##############################################################################################
 
-start_funds = 10000
-balance = 10000
+start_funds = 100
+balance =     100
 balance_unit = "LKR"
-buys = []
-sells = []
 
-for i in range(len(df_selected)):
+env = TradingEnvironment(balance, symbols)
 
-    if balance_unit == "LKR" and df_selected['price'].iloc[i] < df_selected['bollinger_down'].iloc[i]: #buy signal    
-        balance_unit = symbol
-    
-        balance = balance / df_selected['price'].iloc[i]
-        buys.append([df_selected['date'].iloc[i], df_selected['price'].iloc[i]])
+for i in range(len(df)):
+    if env.balance_unit == 'LKR':
+        
+        for symbol in symbols:
+            if env.bottoms[symbol] == 'hit' and df[f'{symbol}_price'].iloc[i] > df[f'{symbol}_lower_band'].iloc[i]:
+                env.bottoms[symbol] = 'released'
+            if df[f'{symbol}_price'].iloc[i] < df[f'{symbol}_lower_band'].iloc[i]: #buy signal
+                if env.bottoms[symbol] == 'released':
+                    env.buy(symbol, df[f'{symbol}_price'].iloc[i], df['datetime'].iloc[i])
+                    env.reset_bottoms()
+                    print(f'Buying at {df[f"{symbol}_price"].iloc[i]}')
+                    break
+                else:
+                    env.bottoms[symbol] = 'hit'
+                
+    if env.balance_unit != 'LKR':
 
-        buy_price = df_selected['price'].iloc[i]
+        if env.tops[env.balance_unit] == 'hit' and (df[f'{env.balance_unit}_price'].iloc[i] < df[f'{env.balance_unit}_upper_band'].iloc[i]):
+            env.tops[env.balance_unit] = 'released'
+            
+        if df[f'{env.balance_unit}_price'].iloc[i] > df[f'{env.balance_unit}_upper_band'].iloc[i]: #sell signal
+            if env.tops[env.balance_unit] == 'released':
+                env.sell(df[f'{env.balance_unit}_price'].iloc[i], df['datetime'].iloc[i])
+                env.reset_tops()
+                print(f'Selling at {df[f"{symbol}_price"].iloc[i]}')
 
-        print(f"Buying at {df_selected['price'].iloc[i]}. Bollinger band is at {df_selected['bollinger_down'].iloc[i]}")
+            else:
+                env.tops[env.balance_unit] = 'hit'
 
-    if balance_unit != "LKR" and (df_selected['price'].iloc[i] > df_selected['bollinger_up'].iloc[i]):   #sell sginal
-        balance_unit = "LKR"
+        # mimic the time taken to update the dataframe. This value is ideally the time gap between the stocks used in the dataset (5 mins in the current dataset)
+        time.sleep(0.01)
 
-        balance = balance * df_selected['price'].iloc[i]
-        sells.append([df_selected['date'].iloc[i], df_selected['price'].iloc[i]])
+if env.balance_unit != 'LKR':
+    env.sell(env.stock_buys[-1][2], df['datetime'].iloc[-1])
+    print(f'Selling at the end of the dataset {env.stock_buys[-1][2]}')
 
-        print(f"Selling at {df_selected['price'].iloc[i]}. Bollinger band is at {df_selected['bollinger_up'].iloc[i]}")
+print("\nEnd of dataset...\n") 
 
-print("End of dataset...\n") 
-
-print(f"Profit/Loss: {math.floor(balance - start_funds)}\n")
+print(f"Profit/Loss: {round((env.balance - start_funds), 2)}\n")
   
-print(buys)
-print(sells)
+# print(env.stock_buys)
+# print(env.stock_sells)
 
 ##############################################################################################
 
 # Testing
-plt.title(symbol + ' Bollinger Bands')
-plt.xlabel('Days')
-plt.ylabel('Closing Prices')
-plt.plot(prices, label='Closing Prices')
-plt.plot(df_selected['bollinger_up'], label='Bollinger Up', c='g')
-plt.plot(df_selected['bollinger_down'], label='Bollinger Down', c='r')
-plt.legend()
-plt.show()
+def show_plot(symbol):
+    plt.title(symbol + ' Bollinger Bands')
+    plt.xlabel('Days')
+    plt.ylabel('Closing Prices')
+    plt.plot(df[f'{symbol}_price'], label='Closing Prices')
+    plt.plot(df[f'{symbol}_upper_band'], label='Bollinger Up', c='g')
+    plt.plot(df[f'{symbol}_lower_band'], label='Bollinger Down', c='r')
+
+    plt.legend()
+    plt.show()
+
+# show_plot('AAPL')
+# show_plot('GOOG')
