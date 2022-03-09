@@ -7,6 +7,9 @@
 
 	<title>Trading Bot | Dashboard</title>
 	<link rel="stylesheet" href="Dashboard.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+	<script src="script.js"></script>
 </head>
 
 <body>
@@ -24,7 +27,10 @@
 	
 	<div class="main">
 
-		<div class="graph"></div>
+		<div class="graph">
+			<canvas id="chart" style="width:100%; height: 100%;"></canvas>
+		</div>
+
 		<div class="controls"></div>
 		<div class="history"></div>
 		<div class="prices"></div>

@@ -57,7 +57,7 @@
 	grid-area: prices;
 }
 
-.graph, .controls, .history, .prices {
+.controls, .history, .prices {
 	border: 2px solid #000;
 	padding: 10px 20px;
 }
