@@ -1,0 +1,4 @@
+pandas
+matplotlib
+flask
+flask_cors
