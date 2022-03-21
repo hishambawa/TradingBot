@@ -26,6 +26,7 @@
 	background:transparent;
 	border:0;
 	outline:none;
+	background-color: #ccc;
 }
   
 .main {
@@ -58,6 +59,25 @@
 }
 
 .controls, .history, .prices {
-	border: 2px solid #000;
+	border: 1px solid #ccc;
 	padding: 10px 20px;
+}
+
+table {
+	width: 100%;
+	table-layout: fixed;
+	text-align: center;
+}
+
+table td {
+	padding: 10px;
+}
+
+.history {
+	overflow: auto;
+}
+
+body {
+	background-color: #2C3E50;
+	color: #ccc;
 }
