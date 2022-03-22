@@ -31,6 +31,7 @@
 	background-color: transparent;
 	color: #ccc;
 	border: 1px solid #ccc
+
 }
   
 .main {
@@ -84,4 +85,6 @@ table td {
 body {
 	background-color: #2C3E50;
 	color: #ccc;
+}
+	
 }
