@@ -9,7 +9,8 @@
 	<link rel="stylesheet" href="dashboard.css">
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-	<script src="script.js"></script>
+	<script src="dashboard.js"></script>
+
 </head>
 
 <body>
@@ -32,7 +33,17 @@
 		</div>
 
 		<div class="controls"></div>
-		<div class="history"></div>
+
+		<div class="history">
+			<table id="history-table">
+				<tr>
+					<th>Date</th>
+					<th>Price</th>
+					<th>Quantity</th>
+				</tr>
+			</table>
+		</div>
+
 		<div class="prices"></div>
 
 	</div>
