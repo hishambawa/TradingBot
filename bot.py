@@ -12,7 +12,6 @@ class Bot:
         self.symbols = symbols
         self.env = TradingEnvironment(balance, symbols)
         
-
     # Get the simple moving averages
     def get_sma(self, prices, rate):
         return prices.rolling(rate).mean()
@@ -53,11 +52,11 @@ class Bot:
                 for symbol in self.symbols:
                     if self.env.bottoms[symbol] == 'hit' and df[f'{symbol}_price'].iloc[i] > df[f'{symbol}_lower_band'].iloc[i]:
                         self.env.bottoms[symbol] = 'released'
-                    if df[f'{symbol}_price'].iloc[i] < df[f'{symbol}_lower_band'].iloc[i]: #buy signal
-                        if self.env.bottoms[symbol] == 'released':
+                    if df[f'{symbol}_price'].iloc[i] < df[f'{symbol}_lower_band'].iloc[i] and self.env.balance >= df[f'{symbol}_price'].iloc[i]: #buy signal # check if the user can afford atleast 1 share
+                        if self.env.bottoms[symbol] == 'released': 
                             self.env.buy(symbol, df[f'{symbol}_price'].iloc[i], df['datetime'].iloc[i])
                             self.env.reset_bottoms()
-                            # print(f'Buying at {df[f"{symbol}_price"].iloc[i]}')
+                            print(f'Buying {self.env.balance} stocks at {df[f"{symbol}_price"].iloc[i]}. Balance is {self.env.currency_balance}')
                             break
                         else:
                             self.env.bottoms[symbol] = 'hit'
@@ -69,34 +68,37 @@ class Bot:
                     
                 if df[f'{self.env.balance_unit}_price'].iloc[i] > df[f'{self.env.balance_unit}_upper_band'].iloc[i]: #sell signal
                     if self.env.tops[self.env.balance_unit] == 'released':
+                        print(f'Selling {self.env.balance} of {self.env.balance_unit} stocks at {df[f"{symbol}_price"].iloc[i]}')
                         self.env.sell(df[f'{self.env.balance_unit}_price'].iloc[i], df['datetime'].iloc[i])
                         self.env.reset_tops()
-                        # print(f'Selling at {df[f"{symbol}_price"].iloc[i]}')
 
                     else:
                         self.env.tops[self.env.balance_unit] = 'hit'
 
                 # mimic the time taken to update the dataframe. This value is ideally the time gap between the stocks used in the dataset (5 mins in the current dataset)
-                time.sleep(0.1)
+                time.sleep(0.2)
 
         if self.env.balance_unit != 'LKR':
-            self.env.sell(self.env.stock_buys[-1][2], df['datetime'].iloc[-1])
-            print(f'Selling at the end of the dataset {self.env.stock_buys[-1][2]}')
+            self.env.sell(self.env.stock_buys[-1][3], df['datetime'].iloc[-1])
+            print(f'Selling at the end of the dataset at {self.env.stock_buys[-1][3]}')
 
         print("\nEnd of dataset...\n") 
 
         print(f"Profit/Loss: {round((self.env.balance - start_funds), 2)}\n")
+
+        print("Finishing...")
+        time.sleep(1)
         
         # print(env.stock_buys)
         # print(env.stock_sells)
 
-        # show_plot(df, 'AAPL')
+        # self.show_plot(df, 'TSLA')
         # show_plot(df, 'GOOG')
 
         ##############################################################################################
 
     # Testing
-    def show_plot(df, symbol):
+    def show_plot(self, df, symbol):
         plt.title(symbol + ' Bollinger Bands')
         plt.xlabel('Days')
         plt.ylabel('Closing Prices')
