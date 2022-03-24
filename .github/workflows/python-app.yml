@@ -36,4 +36,4 @@ jobs:
 #         pytest
         
     - name: Run app
-      run: python3 app.py
+      run: python3 backend/app.py
