@@ -1,6 +1,6 @@
 # TradingBot
 
-API Url: http://157.230.241.112:5000/
+API Url: https://tradingbotlk.herokuapp.com/
 
 To run, install the required packages using the following command
 ```
