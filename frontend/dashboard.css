@@ -86,5 +86,17 @@ body {
 	background-color: #2C3E50;
 	color: #ccc;
 }
-	
+
+.start-bot {
+	border-radius:100%;
+	width:200px;
+	height:200px;
+	background:transparent;
+	padding: 10px 30px;
+	position:center;
+	font-weight: bold;
+	cursor: pointer;
+	border: 1px solid #ccc;
+	outline:none;
+	background-color: #ccc;
 }
