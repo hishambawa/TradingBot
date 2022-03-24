@@ -91,12 +91,33 @@ body {
 	border-radius:100%;
 	width:200px;
 	height:200px;
-	background:transparent;
 	padding: 10px 30px;
-	position:center;
 	font-weight: bold;
 	cursor: pointer;
 	border: 1px solid #ccc;
 	outline:none;
+	background-color: transparent;
+	color: #ccc;
+	font-size: 26px;
+}
+
+.start-bot:hover {
 	background-color: #ccc;
+	color: #2C3E50;
+}
+
+.controls {
+	display: flex;
+	align-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.controls-input {
+	color: #ccc;
+	background-color: transparent;
+	border: 1px solid #ccc;
+	text-align: center;
+	margin: 20px;
+	padding: 10px;
 }
