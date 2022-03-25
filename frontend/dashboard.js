@@ -5,6 +5,9 @@ let sells = [];
 let balance = 1000;
 let bot_funds = 2000;
 
+let user = sessionStorage.getItem("user");
+let running = false;
+
 // let API_URL = "http://192.168.1.4:5000/";
 let API_URL = "https://tradingbotlk.herokuapp.com/"
 
@@ -75,7 +78,7 @@ window.addEventListener("load", function() {
             console.log(sells);
         } 
 
-        else {
+        if(running){
             getData(chart);
         }
         
@@ -98,7 +101,8 @@ function startBot() {
     let data =
     {
         balance: balance,
-        symbols: ["A", "AAPL", "GOOG", "FB"]
+        symbols: ["A", "AAPL", "GOOG", "FB"],
+        user: user
     }
 
     fetch(API_URL + 'start', {
@@ -109,7 +113,7 @@ function startBot() {
         body: JSON.stringify(data),
         })
         .then(response => {
-            finished = true;
+            running = true;
         })
         .catch((error) => {
         console.error('Error:', error);
@@ -120,7 +124,15 @@ let bought = false;
 
 function getData(chart) {
 
-    fetch(API_URL + 'get')
+    let data = { user: user};
+
+    fetch(API_URL + 'get', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
     // Handle success
     .then(response => response.json())  // convert to json
     .then(json => {
@@ -169,6 +181,11 @@ function getData(chart) {
 
             document.getElementById("history-table").innerHTML += template;
 
+        }
+
+        if(!json.running) {
+            running = false;
+            finished = true;
         }
 
     })    
