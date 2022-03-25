@@ -5,7 +5,7 @@ let sells = [];
 let balance = 1000;
 let bot_funds = 2000;
 
-let API_URL = "http://172.19.5.30:5000/";
+let API_URL = "https://tradingbotlk.herokuapp.com/";
 // let API_URL = "http://192.168.1.4:5000/";
 
 window.addEventListener("load", function() {
