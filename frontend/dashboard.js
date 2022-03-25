@@ -25,7 +25,6 @@ window.addEventListener("load", function() {
                 fill: false,
                 lineTension: 0,
                 backgroundColor: "rgb(0, 0, 0)",
-                // borderColor: "rgba(108, 122, 137, 0.5)",
                 borderColor: "#aaa",
                 data: yValues
             }]
@@ -60,15 +59,11 @@ window.addEventListener("load", function() {
     document.getElementById("start").addEventListener("click", function() {
     
         let amount = document.getElementById("amount").value;
-
-        startBot();
     
         if(!isNaN(amount)) startBot();
         else alert("Enter a valid amount");
     });
-    
-    // startBot();
-    
+        
     let timer = setInterval(function() {
 
         if(finished && sells.length == 9) {
@@ -127,7 +122,7 @@ function getData(chart) {
     let data = { user: user};
 
     fetch(API_URL + 'get', {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
