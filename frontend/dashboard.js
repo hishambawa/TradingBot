@@ -5,8 +5,8 @@ let sells = [];
 let balance = 1000;
 let bot_funds = 2000;
 
-// let API_URL = "http://172.20.10.7:5000/";
-let API_URL = "http://192.168.1.4:5000/";
+// let API_URL = "http://192.168.1.4:5000/";
+let API_URL = "https://tradingbotlk.herokuapp.com/"
 
 window.addEventListener("load", function() {
 
@@ -32,25 +32,43 @@ window.addEventListener("load", function() {
             scales: {
                 yAxes: [{
                     ticks: {
-                        // min: 100, 
-                        // max:3000,
+                        fontColor: "#ccc"
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Equity',
                         fontColor: "#ccc"
                     }
                 }],
                 xAxes: [{
                     ticks: {
                         fontColor: "#ccc"
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Date',
+                        fontColor: "#ccc"
                     }
                 }]
             }
         }
     });
+
+    document.getElementById("start").addEventListener("click", function() {
     
-    startBot();
+        let amount = document.getElementById("amount").value;
+
+        startBot();
+    
+        if(!isNaN(amount)) startBot();
+        else alert("Enter a valid amount");
+    });
+    
+    // startBot();
     
     let timer = setInterval(function() {
 
-        if(finished) {
+        if(finished && sells.length == 9) {
             clearInterval(timer);
             console.log("finished");
             console.log(buys);
