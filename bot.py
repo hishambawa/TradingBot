@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import time as time
 
+######################################################################################
 #resources for yahoo finance
 
 #import numpy as np
@@ -33,8 +34,12 @@ import time as time
 #data = getMyPortfolio(stocksymbols)
 #data
 
+#calculating the Simple Moving Averages
+
 #data['SMA 30'] = ta.sma(data['Close'],30)
 #data['SMA 100'] = ta.sma(data['Close'],100)
+
+######################################################################################################
 
 from trading_env import TradingEnvironment
 
