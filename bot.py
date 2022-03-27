@@ -9,9 +9,9 @@ import time as time
 #yf.pdr_override()
 
 
-#stockn = 'googl'
+#stockn = ''
 #stocksymbols = [stockn]
-#startdate = date(2019,8,4)
+#startdate = date(year,month,date)
 #end_date = date.today()
 #print(end_date)
 #def getMyPortfolio(stocks = stocksymbols ,start = startdate , end = end_date):
