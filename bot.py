@@ -18,6 +18,12 @@ import time as time
 #    data = web.get_data_yahoo(stocks , data_source='yahoo' , start = start ,end= end )
 #    return data
 
+#data = getMyPortfolio(stocksymbols)
+#data
+
+#data['SMA 30'] = ta.sma(data['Close'],30)
+#data['SMA 100'] = ta.sma(data['Close'],100)
+
 from trading_env import TradingEnvironment
 
 pd.options.mode.chained_assignment = None
