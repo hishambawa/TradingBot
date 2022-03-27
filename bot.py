@@ -1,22 +1,34 @@
-#import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import time as time
+
+#resources for yahoo finance
+
+#import numpy as np
 #import yfinance as yf
 #import pandas_datareader.data as web
 #import pandas_ta as ta
-import matplotlib.pyplot as plt
-import time as time
 #plt.style.use('fivethirtyeight')
 #yf.pdr_override()
 
+#selecting the required stock 
 
 #stockn = ''
 #stocksymbols = [stockn]
+
+#specifying a certain time period
+
 #startdate = date(year,month,date)
 #end_date = date.today()
 #print(end_date)
+
+#accessing the yahoo finance and retrieving the data regarding the stock
+
 #def getMyPortfolio(stocks = stocksymbols ,start = startdate , end = end_date):
 #    data = web.get_data_yahoo(stocks , data_source='yahoo' , start = start ,end= end )
 #    return data
+
+#assigning the gathered data to the portfolio
 
 #data = getMyPortfolio(stocksymbols)
 #data
