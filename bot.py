@@ -3,7 +3,7 @@ import pandas as pd
 #import yfinance as yf
 #import pandas_datareader.data as web
 #import pandas_ta as ta
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import time as time
 #plt.style.use('fivethirtyeight')
 #yf.pdr_override()
