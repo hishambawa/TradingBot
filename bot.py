@@ -9,6 +9,15 @@ import time as time
 #yf.pdr_override()
 
 
+#stockn = 'googl'
+#stocksymbols = [stockn]
+#startdate = date(2019,8,4)
+#end_date = date.today()
+#print(end_date)
+#def getMyPortfolio(stocks = stocksymbols ,start = startdate , end = end_date):
+#    data = web.get_data_yahoo(stocks , data_source='yahoo' , start = start ,end= end )
+#    return data
+
 from trading_env import TradingEnvironment
 
 pd.options.mode.chained_assignment = None
