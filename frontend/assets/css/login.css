@@ -1,0 +1,32 @@
+.container {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+img {
+	margin: 40px 0;
+}
+
+.input-group {
+	margin: 40px 0;
+}
+
+.input-field {
+	width: 100%;
+	padding: 10px 0;
+	margin: 5px 0;
+	border-left: 0;
+	border-top: 0;
+	border-right: 0;
+	border-bottom: 1px solid #ccc;
+	outline: none;
+	background: transparent;
+	color: #ccc;
+}
+
+.btn-login {
+	display: block;
+	margin: 40px auto;
+}

@@ -1,0 +1,94 @@
+.navbar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 10px;
+}
+
+.navbar-right {
+	margin-left: auto;
+}
+
+.navbar-user {
+	margin-right: 30px;
+}
+  
+.main {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	grid-template-areas: "graph controls"
+						 "history prices";
+	grid-gap: 10px;
+	height: calc(100vh - 101px); 
+} 
+
+.graph {
+	grid-area: graph;
+}
+
+.controls {
+	grid-area: controls;
+}
+
+.history {
+	grid-area: history;
+}
+
+.prices {
+	grid-area: prices;
+}
+
+.controls, .history, .prices {
+	border: 1px solid #ccc;
+	padding: 10px 20px;
+}
+
+table {
+	width: 100%;
+	table-layout: fixed;
+	text-align: center;
+}
+
+table td {
+	padding: 10px;
+}
+
+.history {
+	overflow: auto;
+}
+
+.start-bot {
+	border-radius:100%;
+	width:200px;
+	height:200px;
+	padding: 10px 30px;
+	font-weight: bold;
+	cursor: pointer;
+	border: 1px solid #ccc;
+	outline:none;
+	background-color: transparent;
+	color: #ccc;
+	font-size: 26px;
+}
+
+.start-bot:hover {
+	background-color: #ccc;
+	color: #2C3E50;
+}
+
+.controls {
+	display: flex;
+	align-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.controls-input {
+	color: #ccc;
+	background-color: transparent;
+	border: 1px solid #ccc;
+	text-align: center;
+	margin: 20px;
+	padding: 10px;
+}
