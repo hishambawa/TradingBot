@@ -223,3 +223,9 @@ function includes(array, value) {
 
     return false;
 }
+
+function logout() {
+
+    sessionStorage.clear();
+    window.location.href = "index.html";
+}
