@@ -138,27 +138,27 @@ function getData(chart) {
         console.log(json);
 
         // Check if the bot is running
-        if(json[index] != null && !json[index].running) {
+        if(json.data[index] != null && !json.data[index].running) {
             running = false;
             finished = true;
         }
 
-        else if(json[index] != null && json[index].running) {
-            if(json[index].action == 'buy') {
+        else if(json.data[index] != null && json.data[index].running) {
+            if(json.data[index].action == 'buy') {
     
-                if(index == 0 || !includes(buys, json[index].time)) {
+                if(index == 0 || !includes(buys, json.data[index].time)) {
                     console.log('buy');
 
-                    buys.push(json[index]);
+                    buys.push(json.data[index]);
     
-                    bot_funds = bot_funds - json[index].value;
-                    addData(chart, json[index].time, bot_funds);
+                    bot_funds = bot_funds - json.data[index].value;
+                    addData(chart, json.data[index].time, bot_funds);
     
                     let template =
                     `<tr>
-                        <td>`+ json[index].time +`</td>
-                        <td>USD `+ json[index].price +`</td>
-                        <td>`+ json[index].quantity +`</td>
+                        <td>`+ json.data[index].time +`</td>
+                        <td>USD `+ json.data[index].price +`</td>
+                        <td>`+ json.data[index].quantity +`</td>
                         <td>BUY</td>
                     </tr>`;
     
@@ -168,21 +168,21 @@ function getData(chart) {
                 }
             }
     
-            if(json[index] != null && json[index].action == 'sell') {
+            if(json.data[index] != null && json.data[index].action == 'sell') {
     
-                if(index == 1 || !includes(sells, json[index].time)) {
+                if(index == 1 || !includes(sells, json.data[index].time)) {
                     console.log('sell');
 
-                    sells.push(json[index]);
+                    sells.push(json.data[index]);
     
-                    bot_funds = bot_funds + json[index].value;
-                    addData(chart, json[index].time, bot_funds);
+                    bot_funds = bot_funds + json.data[index].value;
+                    addData(chart, json.data[index].time, bot_funds);
     
                     let template =
                     `<tr>
-                        <td>`+ json[index].time +`</td>
-                        <td>USD `+ json[index].price +`</td>
-                        <td>`+ json[index].quantity +`</td>
+                        <td>`+ json.data[index].time +`</td>
+                        <td>USD `+ json.data[index].price +`</td>
+                        <td>`+ json.data[index].quantity +`</td>
                         <td>SELL</td>
                     </tr>`;
     
@@ -191,7 +191,25 @@ function getData(chart) {
                     index++;
                 }
             }
+
         }
+
+        // Update the prices
+        document.getElementById("price-table").innerHTML = 
+            `<tr>
+                <th>Price</th>
+                <th>Symbol</th>
+            </tr>`;
+
+            for(symbol in json.prices) {
+                let prices =
+                `<tr>
+                    <td>`+ json.prices[symbol] +`</td>
+                    <td>`+ symbol +`</td>
+                </tr>`;
+
+                document.getElementById("price-table").innerHTML += prices;
+            }
 
     })    
     .catch(err => console.log('Request Failed', err)); // Catch errors

@@ -16,23 +16,6 @@
 .navbar-user {
 	margin-right: 30px;
 }
-
-.navbar-btn {
-	border-radius:40px;
-	padding: 10px 30px;
-	font-weight: bold;
-	cursor: pointer;
-	border: 1px solid #ccc;
-	outline:none;
-	background-color: #ccc;
-}
-
-.navbar-btn:hover {
-	background-color: transparent;
-	color: #ccc;
-	border: 1px solid #ccc
-
-}
   
 .main {
 	display: grid;
