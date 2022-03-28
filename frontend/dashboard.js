@@ -2,14 +2,17 @@ let finished = false;
 let buys = [];
 let sells = [];
 
-let balance = 1000;
-let bot_funds = 2000;
+// let balance = 1000;
+let bot_funds = 10000;
 
 let user = sessionStorage.getItem("user");
 let running = false;
 
+let index = 0;
+
 // let API_URL = "http://192.168.1.4:5000/";
-let API_URL = "https://tradingbotlk.herokuapp.com/"
+// let API_URL = "http://192.168.1.4:5000/";
+let API_URL = "https://tradingbotlk.herokuapp.com/";
 
 window.addEventListener("load", function() {
 
@@ -59,18 +62,18 @@ window.addEventListener("load", function() {
     document.getElementById("start").addEventListener("click", function() {
     
         let amount = document.getElementById("amount").value;
+
+        console.log(amount);
     
-        if(!isNaN(amount)) startBot();
+        if(!isNaN(amount) && amount != "") startBot(amount);
         else alert("Enter a valid amount");
     });
         
     let timer = setInterval(function() {
 
-        if(finished && sells.length == 9) {
+        if(finished) {
             clearInterval(timer);
             console.log("finished");
-            console.log(buys);
-            console.log(sells);
         } 
 
         if(running){
@@ -89,13 +92,13 @@ function addData(chart, label, data) {
     chart.update();
 }
 
-function startBot() {
+function startBot(amount) {
 
     console.log("Bot Start")
 
     let data =
     {
-        balance: balance,
+        balance: amount,
         symbols: ["A", "AAPL", "GOOG", "FB"],
         user: user
     }
@@ -132,58 +135,73 @@ function getData(chart) {
     .then(response => response.json())  // convert to json
     .then(json => {
 
-        if(!bought && buys.length != json.buys.length) {
-            buys.push(json.buys[json.buys.length - 1]);
+        console.log(json);
 
-            bot_funds = bot_funds - json.buys[json.buys.length - 1][2]
-
-            addData(chart, json.buys[json.buys.length - 1][1], bot_funds);
-
-            console.log(json.buys[json.buys.length - 1], balance, "buy");
-
-            bought = true;
-
-            let template =
-                `<tr>
-                    <td>`+ json.buys[json.buys.length - 1][1] +`</td>
-                    <td>USD `+ json.buys[json.buys.length - 1][3] +`</td>
-                    <td>`+ json.buys[json.buys.length - 1][4] +`</td>
-                    <td>BUY</td>
-                </tr>`;
-
-            document.getElementById("history-table").innerHTML += template;
-
-        }
-
-        if(bought && sells.length != json.sells.length) {
-            sells.push(json.sells[json.sells.length - 1]);
-
-            bot_funds = bot_funds + json.sells[json.sells.length - 1][2]
-
-            addData(chart, json.sells[json.sells.length - 1][1], bot_funds);
-
-            console.log(json.sells[json.sells.length - 1], balance, "sell");
-
-            bought = false;
-
-            let template =
-                `<tr>
-                    <td>`+ json.sells[json.sells.length - 1][1] +`</td>
-                    <td>USD `+ json.sells[json.sells.length - 1][3] +`</td>
-                    <td>`+ json.sells[json.sells.length - 1][4] +`</td>
-                    <td>SELL</td>
-                </tr>`;
-
-            document.getElementById("history-table").innerHTML += template;
-
-        }
-
-        if(!json.running) {
+        // Check if the bot is running
+        if(json[index] != null && !json[index].running) {
             running = false;
             finished = true;
+        }
+
+        else if(json[index] != null && json[index].running) {
+            if(json[index].action == 'buy') {
+    
+                if(index == 0 || !includes(buys, json[index].time)) {
+                    console.log('buy');
+
+                    buys.push(json[index]);
+    
+                    bot_funds = bot_funds - json[index].value;
+                    addData(chart, json[index].time, bot_funds);
+    
+                    let template =
+                    `<tr>
+                        <td>`+ json[index].time +`</td>
+                        <td>USD `+ json[index].price +`</td>
+                        <td>`+ json[index].quantity +`</td>
+                        <td>BUY</td>
+                    </tr>`;
+    
+                    document.getElementById("history-table").innerHTML += template;
+    
+                    index++;
+                }
+            }
+    
+            if(json[index] != null && json[index].action == 'sell') {
+    
+                if(index == 1 || !includes(sells, json[index].time)) {
+                    console.log('sell');
+
+                    sells.push(json[index]);
+    
+                    bot_funds = bot_funds + json[index].value;
+                    addData(chart, json[index].time, bot_funds);
+    
+                    let template =
+                    `<tr>
+                        <td>`+ json[index].time +`</td>
+                        <td>USD `+ json[index].price +`</td>
+                        <td>`+ json[index].quantity +`</td>
+                        <td>SELL</td>
+                    </tr>`;
+    
+                    document.getElementById("history-table").innerHTML += template;
+    
+                    index++;
+                }
+            }
         }
 
     })    
     .catch(err => console.log('Request Failed', err)); // Catch errors
 
+}
+
+function includes(array, value) {
+    for(item of array) {
+        if(item.time == value.time) return true;
+    }
+
+    return false;
 }
