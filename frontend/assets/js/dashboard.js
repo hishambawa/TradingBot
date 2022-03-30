@@ -65,7 +65,7 @@ window.addEventListener("load", function() {
     });
 
     document.getElementById("start").addEventListener("click", function() {
-        let initial_funds = document.getElementById("amount").value;
+        initial_funds = document.getElementById("amount").value;
         
         bot_leftovers = bot_funds - initial_funds;
     
