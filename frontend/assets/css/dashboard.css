@@ -16,8 +16,9 @@
 .main {
 	display: grid;
 	grid-template-columns: 3fr 1fr;
-	grid-template-rows: 1fr 1fr;
-	grid-template-areas: "graph controls"
+	grid-template-rows: 50px 3fr 2fr;
+	grid-template-areas:"status status" 
+						"graph controls"
 						 "history prices";
 	grid-gap: 10px;
 	height: calc(100vh - 101px); 
@@ -39,6 +40,35 @@
 	grid-area: prices;
 }
 
+.status {
+	grid-area: status;
+	font-size: 16px;
+	font-weight: 500;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 20px;
+}
+
+.status-container {
+	text-align: center;
+}
+
+.status-main {
+	font-size: 18px;
+}
+
+.status-sub {
+	font-size: 10px;
+}
+
+.profit, .buy {
+	color: rgb(0, 151, 0);
+}
+
+.loss, .sell {
+	color: rgb(210 2 2);
+}
+
 .controls, .history, .prices {
 	border: 1px solid #ccc;
 	padding: 10px 20px;
@@ -54,11 +84,15 @@ table td {
 	padding: 10px;
 }
 
+tbody tr:hover {
+	background-color: #253342;
+}
+
 .history {
 	overflow: auto;
 }
 
-.start-bot {
+.btn-round-large {
 	border-radius:100%;
 	width:200px;
 	height:200px;
@@ -72,9 +106,15 @@ table td {
 	font-size: 26px;
 }
 
-.start-bot:hover {
+.btn-round-large:hover {
 	background-color: #ccc;
 	color: #2C3E50;
+}
+
+#stop {
+	animation-name: start;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
 }
 
 .controls {
@@ -82,6 +122,7 @@ table td {
 	align-content: center;
     flex-wrap: wrap;
     flex-direction: column;
+	justify-content: center;
 }
 
 .controls-input {
@@ -91,4 +132,11 @@ table td {
 	text-align: center;
 	margin: 20px;
 	padding: 10px;
+	justify-self: flex-start;
+}
+
+@keyframes start {
+	0% {border: 1px solid #ccc}
+	50% {border: 10px solid #ccc;}
+	100% {border: 1px solid #ccc}
 }
