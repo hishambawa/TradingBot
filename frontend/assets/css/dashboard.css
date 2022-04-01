@@ -80,7 +80,13 @@ table {
 	text-align: center;
 }
 
-table td {
+th {
+	position: sticky;
+	top: -10px;
+	background-color: #2C3E50;
+}
+
+th, td {
 	padding: 10px;
 }
 

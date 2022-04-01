@@ -10,6 +10,11 @@ p {
 	margin: 0;
 }
 
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
 .btn-long {
 	border-radius:40px;
 	padding: 10px 30px;
@@ -18,11 +23,24 @@ p {
 	border: 1px solid #ccc;
 	outline:none;
 	background-color: #ccc;
+	color: #2C3E50;
 }
 
 .btn-long:hover {
 	background-color: transparent;
 	color: #ccc;
 	border: 1px solid #ccc;
+}
 
+.btn-centered {
+	display: block;
+	margin: 40px auto;
+}
+
+.container {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }

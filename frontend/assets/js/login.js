@@ -6,6 +6,6 @@ document.getElementById("login-form").addEventListener("submit", function(e) {
     let username = form['username'].value;
     let password = form['password'].value;
 
-    sessionStorage.setItem("user", username)
+    sessionStorage.setItem("user", username);
     window.location.href = "dashboard.html?user=" + username;
 });
