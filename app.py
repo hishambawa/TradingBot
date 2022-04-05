@@ -1,16 +1,37 @@
-from flask import Flask, request
+import threading
+from flask import Flask, request, Response
+from flask_cors import CORS
 import json
 
+from bot import Bot
+
 app = Flask(__name__)
+CORS(app) # Allow cross origin requests
 
-@app.route("/get")
-def test():
-    return "Flask is running"
+users = {}
 
-@app.route('/post',methods = ['POST'])
-def login():
+# Start bot function
+@app.route('/start',methods = ['POST'])
+def start():
     if request.method == 'POST':
-        data = request.json
-        print(data["test"])
+        
+        try:
+            data = request.json
 
-        return "done"
+            balance = int(data["balance"])
+            symbols = list(data["symbols"])
+            user = str(data["user"])
+
+            bot = Bot(user, balance, symbols)
+
+            # Add the bot to a dictionary to retrieve later when getting info in the getData method
+            users[user] = bot
+
+            # Use a thread to allow multiple bots to run simultaneously
+            threading.Thread(target=bot.run, name=user).start()
+
+            return Response(json.dumps({'status' : 1}), mimetype='application/json')
+        
+        except:
+            return Response(json.dumps({'status' : -1}), mimetype='application/json')
+
