@@ -5,7 +5,7 @@ import json
 
 from bot import Bot
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend')
 CORS(app) # Allow cross origin requests
 
 users = {}
