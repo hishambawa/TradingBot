@@ -33,51 +33,43 @@ def start():
             return Response(json.dumps({'status' : 1}), mimetype='application/json')
         
         except:
-            return Response(json.dumps({'status' : -1}), mimetype='application/json')
-        
-        # Get bot data function
-@app.route("/get", methods = ['POST'])
-def getData():
+             return Response(json.dumps({'issue': True, 'message': 'error'}), mimetype='application/json')
+            
+ # Stop bot function
+@app.route("/stop", methods = ['POST'])
+def stop():
     if request.method == 'POST':
         try:
-            data = request.json
-            currentUser = str(data['user'])
+            user = str(request.json['user'])
+                       
+            for thread in threading.enumerate():
+                
+                # Check if a thread with the name of the user who want to stop the bot exists
+                if thread.name == user:
 
-            if currentUser in users:
-            
-                # Get the current users bot
-                bot = users[currentUser]
-
-                if bot.running:
-                    env = bot.env
-
-                    data = {
-                        'data': env.data,
-                        'prices': bot.prices,
-                        'running': True,
-                        'issue': False
-                    }
-
-                    return Response(json.dumps(data), mimetype='application/json')
-
-                else:
-                    env = bot.env
+                    # Set the force_stop variable of the thread to True. This will stop the bot
+                    # as the bot constantly checks the value of this variable, and only continues if
+                    # it is set to False.
+                    thread.force_stop = True
                     
-                    data = {
-                        'data': env.data,
-                        'running': False,
-                        'issue': False
-                    }
+                    # Remove the user from the dictionary after stopping the bot
+                    print(f"Removing {user}")
+                    users.pop(user)
                     
-                    # Remove the bot from the list if its not running
-                    print(f"Removing {bot.user}")
-                    users.pop(currentUser)
-                    
-                    return Response(json.dumps(data), mimetype='application/json')
-            else:
-                return Response(json.dumps({'issue': True}), mimetype='application/json')
+                    return Response(json.dumps({'status' : 1}), mimetype='application/json')
+                
+            return Response(json.dumps({'status' : 0, 'message': f'couldnt find thread {user}'}), mimetype='application/json')
+
         except Exception:
-            return Response(json.dumps({'issue': True, 'message': 'error'}), mimetype='application/json')
+            return Response(json.dumps({'status' : -1}), mimetype='application/json')
+
+# Run flask on all public IP addresses
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", debug=True)
+
+            return Response(json.dumps({'status' : -1}), mimetype='application/json')
+        
+
 
             
  
