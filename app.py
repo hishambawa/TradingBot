@@ -34,4 +34,50 @@ def start():
         
         except:
             return Response(json.dumps({'status' : -1}), mimetype='application/json')
+        
+        # Get bot data function
+@app.route("/get", methods = ['POST'])
+def getData():
+    if request.method == 'POST':
+        try:
+            data = request.json
+            currentUser = str(data['user'])
 
+            if currentUser in users:
+            
+                # Get the current users bot
+                bot = users[currentUser]
+
+                if bot.running:
+                    env = bot.env
+
+                    data = {
+                        'data': env.data,
+                        'prices': bot.prices,
+                        'running': True,
+                        'issue': False
+                    }
+
+                    return Response(json.dumps(data), mimetype='application/json')
+
+                else:
+                    env = bot.env
+                    
+                    data = {
+                        'data': env.data,
+                        'running': False,
+                        'issue': False
+                    }
+                    
+                    # Remove the bot from the list if its not running
+                    print(f"Removing {bot.user}")
+                    users.pop(currentUser)
+                    
+                    return Response(json.dumps(data), mimetype='application/json')
+            else:
+                return Response(json.dumps({'issue': True}), mimetype='application/json')
+        except Exception:
+            return Response(json.dumps({'issue': True, 'message': 'error'}), mimetype='application/json')
+
+            
+ 
