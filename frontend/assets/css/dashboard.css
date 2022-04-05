@@ -16,7 +16,7 @@
 .main {
 	display: grid;
 	grid-template-columns: 3fr 1fr;
-	grid-template-rows: 50px 3fr 2fr;
+	grid-template-rows: 50px 2fr 2fr;
 	grid-template-areas:"status status" 
 						"graph controls"
 						 "history prices";
@@ -80,7 +80,13 @@ table {
 	text-align: center;
 }
 
-table td {
+th {
+	position: sticky;
+	top: -10px;
+	background-color: #2C3E50;
+}
+
+th, td {
 	padding: 10px;
 }
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Bot | Error</title>
+
+    <link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+    <div class="container">
+        <form action="index.html" style="text-align: center; margin: 40px;">
+            <img src="assets/logo.png" alt="Logo" width="250">
+            <h1>Oops :(</h1>
+            <p>An error occurred.</p>
+            <button type="submit" class="btn-long btn-centered">Go back</button>
+        </form>
+    </div>
+
+    <script>
+        let error = sessionStorage.getItem("error");
+        console.log(error);
+        sessionStorage.clear();
+    </script>
+    
+</body>
+</html>
