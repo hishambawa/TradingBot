@@ -87,28 +87,31 @@ class Bot:
                     else:
                         self.env.tops[self.env.balance_unit] = 'hit'
 
-                # mimic the time taken to update the dataframe. This value is ideally the time gap between the stocks used in the dataset (5 mins in the current dataset)
-                time.sleep(0.2)
+               # mimic the time taken to update the dataframe. This value is ideally the time gap between the stocks used in the dataset (5 mins in the current dataset)
+                time.sleep(0.5)
+
+            for symbol in self.symbols:
+                self.prices[symbol] = df[f'{symbol}_price'].iloc[i]
 
         if self.env.balance_unit != 'LKR':
-            self.env.sell(self.env.stock_buys[-1][3], df['datetime'].iloc[-1])
-            print(f'Selling at the end of the dataset at {self.env.stock_buys[-1][3]}')
+            self.env.sell(self.env.data[-1]['price'], df['datetime'].iloc[-1])
+            print(f'Selling at the end of the dataset at {self.env.data[-1]["price"]}')
 
         print("\nEnd of dataset...\n") 
 
         print(f"Profit/Loss: {round((self.env.balance - start_funds), 2)}\n")
 
-        print("Finishing...")
-        time.sleep(1)
+        print(f"Finishing... {self.user}")
         
-        # print(env.stock_buys)
-        # print(env.stock_sells)
+        time.sleep(5)
+        
+        self.env.finish()
+        self.running = False
 
         # self.show_plot(df, 'TSLA')
         # show_plot(df, 'GOOG')
 
         ##############################################################################################
-
     # Testing
     def show_plot(self, df, symbol):
         plt.title(symbol + ' Bollinger Bands')
