@@ -32,6 +32,7 @@ class Bot:
         return bollinger_up, bollinger_down
 
     def run(self):
+        self.running = True
         df = pd.read_csv('data.csv')
 
         for symbol in self.symbols:
@@ -45,8 +46,7 @@ class Bot:
         # Remove the missing values
         df.dropna(inplace=True)
 
-        print("Running")
-
+        print(f"Running {self.user}")
         ##############################################################################################
 
         start_funds = self.balance
