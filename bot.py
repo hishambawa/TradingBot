@@ -1,3 +1,4 @@
+import threading
 import pandas as pd
 import matplotlib.pyplot as plt
 import time as time
@@ -7,10 +8,14 @@ from trading_env import TradingEnvironment
 pd.options.mode.chained_assignment = None
 
 class Bot:
-    def __init__(self, balance, symbols):
+    def __init__(self, user, balance, symbols):
         self.balance = balance
         self.symbols = symbols
+        self.prices = {}
         self.env = TradingEnvironment(balance, symbols)
+
+        self.user = user
+        self.running = False
         
     # Get the simple moving averages
     def get_sma(self, prices, rate):
