@@ -52,6 +52,13 @@ class Bot:
         start_funds = self.balance
 
         for i in range(len(df)):
+
+            thread = threading.current_thread()
+
+            if getattr(thread, 'force_stop', False):
+                print("FORCE STOP!!!!!")
+                break
+
             if self.env.balance_unit == 'LKR':
                 
                 for symbol in self.symbols:
