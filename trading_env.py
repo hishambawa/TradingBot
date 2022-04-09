@@ -1,9 +1,9 @@
 class TradingEnvironment:
     def __init__(self, balance, symbols):
         self.balance = balance
-        self.stock_buys = []
-        self.stock_sells = []
         self.balance_unit = "LKR"
+
+        self.data = []
 
         self.currency_balance = balance
 
@@ -18,25 +18,40 @@ class TradingEnvironment:
     def buy(self, symbol, buy_price, time):
         self.balance_unit = symbol
 
-        quantity = int(self.balance / buy_price)
+        self.balance = int(self.balance / buy_price) # number of stocks purchased
 
-        self.balance = quantity # number of stocks purchased
-
-        stock_value = quantity * buy_price
+        stock_value = self.balance * buy_price
         self.currency_balance = self.currency_balance - stock_value #  update the left over money when buying stocks
         
-        self.stock_buys.append([symbol, time, stock_value, buy_price, quantity])
+        data = {
+            'action': 'buy',
+            'symbol': symbol,
+            'time': time,
+            'value': stock_value,
+            'price': buy_price,
+            'quantity': self.balance,
+            'running': True
+        }
+
+        self.data.append(data)
 
     def sell(self, sell_price, time):
-        self.balance_unit = "LKR"
-
         sell_value = self.balance * sell_price
-        quantity = self.balance
+        self.currency_balance = sell_value + self.currency_balance
 
-        self.balance = (self.balance * sell_price) + self.currency_balance
-        self.currency_balance = self.balance
+        data = {
+            'action': 'sell',
+            'symbol': self.balance_unit,
+            'time': time,
+            'value': sell_value,
+            'price': sell_price,
+            'quantity': self.balance,
+            'running': True
+        }
 
-        self.stock_sells.append([self.balance_unit, time, sell_value, sell_price, quantity])
+        self.data.append(data)
+        self.balance_unit = "LKR"
+        self.balance = self.currency_balance
 
     def reset_bottoms(self):
         for symbol in self.symbols:
@@ -45,3 +60,6 @@ class TradingEnvironment:
     def reset_tops(self):
         for symbol in self.symbols:
             self.tops[symbol] = 'none'
+
+    def finish(self):
+        self.data.append({'running': False})
