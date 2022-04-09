@@ -1,4 +1,3 @@
-from crypt import methods
 import threading
 from flask import Flask, request, Response
 from flask_cors import CORS
@@ -12,7 +11,7 @@ CORS(app) # Allow cross origin requests
 users = {}
 
 # Start bot function
-@app.route('/start',methods = ['POST'])
+@app.route('/start', methods = ['POST'])
 def start():
     if request.method == 'POST':
         
