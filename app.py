@@ -1,3 +1,4 @@
+from crypt import methods
 import threading
 from flask import Flask, request, Response
 from flask_cors import CORS
@@ -106,6 +107,11 @@ def stop():
 
         except Exception:
             return Response(json.dumps({'status' : -1}), mimetype='application/json')
+
+# Check the app version
+@app.route("/version", methods = ['GET'])
+def version():
+    return Response(json.dumps({'version' : 1.0}), mimetype='application/json')
 
 # Run flask on all public IP addresses
 if __name__ == '__main__':
